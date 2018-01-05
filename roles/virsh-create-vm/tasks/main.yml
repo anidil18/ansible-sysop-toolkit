@@ -1,0 +1,16 @@
+- name: Copy xml template file
+  copy: src=postgres.xml dest=/var/slow_datastore/postgres.xml
+  tags: copy template file
+
+- name: define vm
+  virt:
+      name: "{{ vm_name }}"
+      command: define
+      xml: "{{ lookup('file' , 'postgres.xml') }}"
+      uri: 'qemu:///system'
+
+- name: start vm
+  virt:
+      name: "{{ vm_name }}"
+      state: running
+      uri: 'qemu:///system'

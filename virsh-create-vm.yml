@@ -1,0 +1,5 @@
+- name: Virsh create vm 
+  hosts: all
+  user: root
+  roles:
+    -  virsh-create-vm
