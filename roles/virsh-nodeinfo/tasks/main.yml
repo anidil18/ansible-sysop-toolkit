@@ -1,0 +1,8 @@
+- name: Virsh list vm
+  virt:
+    command: nodeinfo
+  register: result  
+
+
+- debug:
+    var: result

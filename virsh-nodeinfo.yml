@@ -1,0 +1,5 @@
+- name: Virsh list vm 
+  hosts: all
+  user: root
+  roles:
+    -  virsh-nodeinfo

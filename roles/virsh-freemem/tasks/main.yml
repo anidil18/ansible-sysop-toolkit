@@ -1,0 +1,8 @@
+- name: Virsh list vm
+  virt:
+    command: freemem
+  register: result  
+
+
+- debug:
+    var: result
