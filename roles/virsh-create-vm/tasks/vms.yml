@@ -1,0 +1,19 @@
+---
+vm_location: /var/slow_datastore
+root_pass: "123qwe"
+ 
+guests:
+  test21:
+    mem: 2048
+    cpus: 2 
+    os_type: rhel7
+    file_type: qcow2
+    hdd:  10G
+#  test101:
+#    mem: 2048
+#    cpus: 2
+#    os_type: rhel7
+#    file_type: qcow2
+#    hdd:  10G
+
+

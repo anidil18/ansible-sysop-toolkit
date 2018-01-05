@@ -1,16 +1,74 @@
-- name: Copy xml template file
-  copy: src=postgres.xml dest=/var/slow_datastore/postgres.xml
-  tags: copy template file
+---
+- name: create VMs
+  hosts: kvm
+  become: true
+  vars_files:
+    - vms.yml
+ 
+  tasks:
+    - name: get VM disks
+      command: "ls {{ vm_location }}"
+      register: disks
+      changed_when: "disks.rc != 0"
+    - debug: msg={{ disks }}
 
-- name: define vm
-  virt:
-      name: "{{ vm_name }}"
-      command: define
-      xml: "{{ lookup('file' , 'postgres.xml') }}"
-      uri: 'qemu:///system'
+    - name: create disk
+      command: >
+               virsh vol-create-as slowstorage  test21 10G
+      tags: disk-create
 
-- name: start vm
-  virt:
-      name: "{{ vm_name }}"
-      state: running
-      uri: 'qemu:///system'
+#      when: item.key not in disk.stdout
+#    - debug: msg={{ item.key }}
+
+#    - name: create disk
+#      command: >
+#               virt-builder --format qcow2 centos-7.4
+#               -o {{ vm_location}}/{{ item.key }}.{{ item.value.file_type }}
+#               --root-password password:{{ root_pass }}
+#      when: item.key not in disks.stdout
+#      with_dict: "{{ guests }}"
+ 
+    - name: get list of VMs
+      virt:
+        command: "list_vms"
+      register: vms 
+      tags: vm-list
+ 
+    - name: create vm
+      command: >
+                virt-install
+                --name test21 
+                --memory {{ item.value.mem }} --vcpus {{ item.value.cpus }}
+                --cdrom {{ vm_location }}/CentOS-7-x86_64-NetInstall-1708.iso
+                --disk {{ vm_location }}/test21
+                --noautoconsole --os-variant {{ item.value.os_type }}
+#      when: item.key not in vms.list_vms
+      with_dict: "{{ guests }}"
+      tags: vm-create
+ 
+    - name: start vm
+      virt:
+        name: test21
+        state: running
+      with_dict: "{{ guests }}"
+      tags: vm-start
+
+# Get from https://hooks.technology/2017/10/04/create-vms-on-kvm-with-ansible/
+
+
+#- name: Copy xml template file
+#  copy: src=postgres.xml dest=/var/slow_datastore/postgres.xml
+#  tags: copy template file
+#
+#- name: define vm
+#  virt:
+#      name: "{{ vm_name }}"
+#      command: define
+#      xml: "{{ lookup('file' , 'postgres.xml') }}"
+#      uri: 'qemu:///system'
+#
+#- name: start vm
+#  virt:
+#      name: "{{ vm_name }}"
+#      state: running
+#      uri: 'qemu:///system'
