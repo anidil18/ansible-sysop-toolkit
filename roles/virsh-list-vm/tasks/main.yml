@@ -1,0 +1,8 @@
+- name: Virsh list vm
+  virt:
+    command: list_vms
+  register: result  
+
+
+- debug:
+    var: result
