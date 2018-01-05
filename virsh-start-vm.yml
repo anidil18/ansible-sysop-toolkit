@@ -1,0 +1,5 @@
+- name: Virsh start vm 
+  hosts: all
+  user: root
+  roles:
+    -  virsh-start-vm

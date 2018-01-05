@@ -1,0 +1,4 @@
+# a playbook task line:
+- virt:
+    name: "{{ started_vm }}"
+    state: running
