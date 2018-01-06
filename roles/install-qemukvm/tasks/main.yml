@@ -1,6 +1,8 @@
 - name: install qemukvm
   apt: name={{ item }} state=installed
   with_items:
+    - qemu
+    - qemuctl
     - qemu-kvm
     - qemu-system-arm
     - qemu-system-mips
@@ -8,3 +10,16 @@
     - qemu-system-ppc
     - qemu-system-sparc
     - qemu-system-x86
+    - qemu-launcher
+    - qemu-user
+    - qemu-user-binfmt
+#    - qemu-user-static
+    - qemubuilder
+    - qemulator
+    - qtemu
+    - sgabios
+    - vgabios
+    - qemu-efi
+    - ipxe-qemu
+    - libvirt-bin
+    - libvirt-doc
