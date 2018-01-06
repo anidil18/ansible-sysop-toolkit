@@ -1,0 +1,7 @@
+- name: New host setup 
+  hosts: all
+  user: root
+  vars_files:
+    - roles/mactelnet-server/files/secrets.yml
+  roles:
+    -  mactelnet-server

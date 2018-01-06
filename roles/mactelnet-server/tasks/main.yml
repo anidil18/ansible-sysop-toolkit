@@ -1,0 +1,26 @@
+- name: install mactelnet
+  apt: name={{ item }} state=installed
+  with_items:
+    - mactelnet-server
+    - mactelnet-client
+  tags: install_mactelnet
+
+- name: copy mactelnet server config
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    mode: "{{item.mode}}"
+  with_items:
+    - { src: 'mactelnetd.users',               dest: '/etc/mactelnetd.users', mode: '0644'}  
+  tags: co[y_mactelnet_conf
+
+- name: start mactelnet server
+  service:
+    name: mactelnet-server
+    state: started
+  tags: mactelnet_service_start
+
+- service:
+    name: mactelnet-server
+    enabled: yes
+  tags: mactelnet_server_enable
