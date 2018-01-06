@@ -2,6 +2,10 @@
   copy: src=sources.list dest=/etc/apt/sources.list
   tags: sources
 
+- name: update apt cache
+  command: apt-get update
+  tags: update_apt_cache
+
 - name: upload bashrc file
   copy: src=.bashrc dest=/root/.bashrc
   tags: upload_bashrc_root
