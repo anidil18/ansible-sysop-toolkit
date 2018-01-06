@@ -1,0 +1,5 @@
+deb http://security.debian.org/ jessie/updates main contrib
+deb-src http://security.debian.org/ jessie/updates main contrib
+
+deb http://ftp.debian.org/debian stable main contrib non-free
+deb http://ftp.debian.org/debian/ jessie-updates  main contrib non-free

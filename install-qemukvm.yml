@@ -1,0 +1,5 @@
+- name: Install qemu-kvm
+  hosts: all
+  user: root
+  roles:
+    -  install-qemukvm

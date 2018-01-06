@@ -1,0 +1,108 @@
+- name: upload our sources.list
+  copy: src=sources.list dest=/etc/apt/sources.list
+  tags: sources
+
+- name: upload bashrc file
+  copy: src=.bashrc dest=/root/.bashrc
+  tags: upload_bashrc_root
+
+- name: upload bashrc file for user
+  copy: src=.bashrc dest=/home/user/.bashrc
+  tags: upload_bashrc_user
+
+- name: update apt package cache
+  apt: update_cache=yes cache_valid_time=3600 force=yes
+
+- name: upgrade apt to the latest packages
+  apt: upgrade=safe force=yes
+
+- name: install common packages
+  apt: name={{ item }} state=installed
+  with_items:
+    - screen
+    - tmux
+    - mc
+    - ansible
+    - atop
+    - htop
+    - ufw
+    - ntp
+    - git
+    - unattended-upgrades
+    - curl
+    - unzip
+    - httpie
+
+- name: set timezone
+  command: /usr/bin/timedatectl set-timezone MSK
+
+- name: be sure  ntp server1 is not in the list
+  lineinfile: dest=/etc/ntp.conf line="server 0.ru.pool.ntp.org" state=absent
+  tags: ntp
+
+- name: be sure ntp server2 is not in the list
+  lineinfile: dest=/etc/ntp.conf line="server 1.ru.pool.ntp.org" state=absent
+  tags: ntp
+
+- name: be sure ntp is running
+  service: name=ntp state=restarted enabled=yes
+  tags: ntp
+
+- name: enable ll alias
+  lineinfile: dest=/root/.bashrc line="alias ll='ls $LS_OPTIONS -l'" state=present
+  tags: alias
+
+- name: setup resolv.conf
+  copy: src=resolv.conf dest=/etc/resolv.conf owner=root group=root mode=644
+  tags: resolv
+
+- name: setup sysctl.conf
+  copy: src=sysctl.conf dest=/etc/sysctl.conf owner=root group=root mode=644
+  tags: sysctl
+
+- name: apply sysctl
+  command: sysctl --system
+  tags: sysctl
+
+- name: setup limits.conf
+  copy: src=limits.conf dest=/etc/security/limits.conf owner=root group=root mode=644
+  tags: ulimit
+
+- name: set up authorized_keys for admins
+  authorized_key: user=root key={{ item }}
+  tags: setup_ssh_keys
+  with_file:
+    - id_rsa.pub1
+
+- name: remove authorized_keys
+  authorized_key: user=root key={{ item }} state=absent
+  tags: remove_ssh_keys
+  with_file:
+    - id_rsa.pub1
+
+- name: adjust apt update intervals
+  copy: src=apt_periodic dest=/etc/apt/apt.conf.d/10periodic
+
+- name: disallow password authentication
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^PasswordAuthentication"
+              line="PasswordAuthentication no"
+              state=present
+  tags: disable_root_password_login
+
+
+## Setup Firewall
+
+- name: reset ufw firewall
+  ufw: state=reset
+  tags: ufw
+
+- name: restart machine
+  shell: sleep 2 && shutdown -r now "Ansible updates triggered"
+  async: 1
+  poll: 0
+  ignore_errors: true
+  tags: restart
+
+- name: waiting for server to come back
+  local_action: wait_for host={{ inventory_hostname }} state=started

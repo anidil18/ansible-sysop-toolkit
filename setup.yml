@@ -1,0 +1,5 @@
+- name: New host setup 
+  hosts: all
+  user: root
+  roles:
+    -  common
