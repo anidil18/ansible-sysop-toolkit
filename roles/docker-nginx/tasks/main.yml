@@ -1,0 +1,12 @@
+- name: Pull nginx image
+  docker_image:
+    name: nginx
+  tags: pull_nginx
+
+- name: Start nginx container
+  docker_container:
+    name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+  tags: start_nginx

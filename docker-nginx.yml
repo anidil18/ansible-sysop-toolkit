@@ -1,0 +1,5 @@
+- name: Pull docker common lisp image 
+  hosts: all
+  user: root
+  roles:
+    -  docker-nginx

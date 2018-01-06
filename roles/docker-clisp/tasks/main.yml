@@ -1,0 +1,10 @@
+- name: Pull Common Lisp image
+  docker_image:
+    name: tektas/clisp
+  tags: pull_clisp
+
+- name: Start clisp container
+  docker_container:
+    name: clisp
+    image: tektas/clisp
+  tags: start_clisp
