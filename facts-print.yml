@@ -1,0 +1,7 @@
+- name: Get facts 
+  hosts: all
+  user: root
+  vars_files: 
+    - roles/facts-print/files/var.yml
+  roles:
+    -  facts-print

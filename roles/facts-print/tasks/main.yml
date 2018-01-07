@@ -1,0 +1,8 @@
+- name: Get_facts
+  setup:
+    filter: "{{ filter }}"
+  register: all_facts
+
+- debug: msg={{ all_facts }}
+
+
