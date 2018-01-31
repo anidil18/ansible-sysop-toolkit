@@ -36,6 +36,7 @@
     - curl
     - unzip
     - httpie
+  tags: install common packages
 
 - name: set timezone
   command: /usr/bin/timedatectl set-timezone MSK

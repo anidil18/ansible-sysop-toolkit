@@ -1,0 +1,5 @@
+- name: Install Openvpn server 
+  hosts: all
+  user: root
+  roles:
+    -  openvpn
