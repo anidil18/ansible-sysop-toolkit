@@ -1,7 +1,11 @@
-- name: Create a docker OpenVPN volume
-  docker_volume:
-    name: openvpn
-  tags: create_volume
+#- name: "Create a docker OpenVPN volume"
+#  docker_volume:
+#    name: openvpn
+#  tags: create_volume
+
+- name: create OpenVPN volume
+  command: docker volume create --name openvpn
+#  when: openvpn_exists|failed
 
 - name: Install OpenVPN docker container
   docker:
@@ -14,9 +18,9 @@
     - /openvpn
     ports:
     - "1194:1194/udp"
-  tag: pull_image
+  tags: pull_image
 
-- name:
+- name: Install OpenVPN step2
   docker:
     name: openvpn
     state: reload
@@ -24,7 +28,7 @@
     command: -v openvpn/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
   tags: image_openvpn_initpki
 
-- name:
+- name: Install OpenVPN step3
   docker:
     name: openvpn
     state: reload
