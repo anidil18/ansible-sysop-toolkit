@@ -1,3 +1,21 @@
+- name: install common packages
+  apt: name={{ item }} state=installed
+  with_items:
+    - python-pip
+  tags: install_packages
+
+- name: Upgrade pip
+  command: pip install --upgrade pip
+
+- name: Docker-PY
+  pip:
+    name: "{{ item }}"
+  with_items:
+  - setuptools
+#  - six
+  - docker-py
+  tags: install_packages
+
 #- name: "Create a docker OpenVPN volume"
 #  docker_volume:
 #    name: openvpn
@@ -20,6 +38,13 @@
     - "1194:1194/udp"
   tags: pull_image
 
+- name: Install OpenVPN stop1
+  docker:
+    name: openvpn
+    state: stopped
+    image: kylemanna/openvpn:latest
+  tags: openvpn_stop
+
 - name: Install OpenVPN step2
   docker:
     name: openvpn
@@ -27,6 +52,13 @@
     image: kylemanna/openvpn:latest
     command: -v openvpn/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
   tags: image_openvpn_initpki
+
+- name: Install OpenVPN stop2
+  docker:
+    name: openvpn 
+    state: stopped
+    image: kylemanna/openvpn:latest
+  tags: openvpn_stop
 
 - name: Install OpenVPN step3
   docker:
