@@ -1,0 +1,3 @@
+- [ ] Refactoring of "common" role 
+- [ ] Add usage examples for roles openvpn, backup-openvpn and mactelnet
+- [ ] Refactoring of virsh roles
