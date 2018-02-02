@@ -23,48 +23,62 @@
 
 - name: create OpenVPN volume
   command: docker volume create --name openvpn
-#  when: openvpn_exists|failed
+#  when: openvpn_exists|faileda
+  tags: create_volume
 
-- name: Install OpenVPN docker container
-  docker:
-    name: openvpn
-    image: kylemanna/openvpn:latest
-    state: started
-    pull: always
-    command: -v openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.litiushkin.ru
-    volumes:
-    - /openvpn
-    ports:
-    - "1194:1194/udp"
-  tags: pull_image
+- name: Setup OpenVPN step1
+  command: docker run -v openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.litiushkin.ru
+  tags: setup_openvpn
 
-- name: Install OpenVPN stop1
-  docker:
-    name: openvpn
-    state: stopped
-    image: kylemanna/openvpn:latest
-  tags: openvpn_stop
+- name: Setup OpenVPN step2
+  command: docker run -v openvpn:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+  tags: setup_openvpn
 
-- name: Install OpenVPN step2
-  docker:
-    name: openvpn
-    state: reload
-    image: kylemanna/openvpn:latest
-    command: -v openvpn/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
-  tags: image_openvpn_initpki
+- name: Start OpenVPN
+  command: docker run -v openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+  tags: start_openvpn
 
-- name: Install OpenVPN stop2
-  docker:
-    name: openvpn 
-    state: stopped
-    image: kylemanna/openvpn:latest
-  tags: openvpn_stop
 
-- name: Install OpenVPN step3
-  docker:
-    name: openvpn
-    state: reload
-    image: kylemanna/openvpn:latest
-    command: -v openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
-  tags: openvpn_image_start
+#- name: Install OpenVPN docker container
+#  docker:
+#    name: openvpn
+#    image: kylemanna/openvpn:latest
+#    state: started
+#    pull: always
+#    command: -v openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.litiushkin.ru
+#    volumes:
+#    - /openvpn
+#    ports:
+#    - "1194:1194/udp"
+#  tags: pull_image
+
+#- name: Install OpenVPN stop1
+#  docker:
+#    name: openvpn
+#    state: stopped
+#    image: kylemanna/openvpn:latest
+#  tags: openvpn_stop
+
+#- name: Install OpenVPN step2
+#  docker:
+#    name: openvpn
+#    state: reload
+#    image: kylemanna/openvpn:latest
+#    command: -v openvpn/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+#  tags: image_openvpn_initpki
+
+#- name: Install OpenVPN stop2
+#  docker:
+#    name: openvpn 
+#    state: stopped
+#    image: kylemanna/openvpn:latest
+#  tags: openvpn_stop
+
+#- name: Install OpenVPN step3
+#  docker:
+#    name: openvpn
+#    state: reload
+#    image: kylemanna/openvpn:latest
+#    command: -v openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+#  tags: openvpn_image_start
     
