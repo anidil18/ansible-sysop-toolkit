@@ -17,8 +17,19 @@
   tags: install_packages
 
 - name: create OpenVPN volume
-  command: docker volume create --name openvpn
+  command: docker volume create --name {{ openvpn_volume }}
   tags: create_volume
+
+- name: Copy over the openvpn configuration
+  synchronize:
+    src: '{{ openvpn_restore_src }}'
+    dest: '{{ openvpn_restore_dst }}'
+    recursive: yes
+    links: yes
+    perms: yes
+    copy_links: yes
+    delete: yes
+  tags: restore_backup_configuration
 
 - name: Install OpenVPN docker container
   docker:
@@ -27,39 +38,19 @@
     state: present
     pull: always
     volumes:
-    - /openvpn
+    - /{{ openvpn_volume }}
     ports:
     - "1194:1194/udp"
   tags: pull_image
 
-#- name: Pull OpenVPN image
-#  command: docker pull kylemanna/openvpn:latest
-#  tags: pull_image
-
-- name: Setup OpenVPN step1
-  command: docker run -v openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.litiushkin.ru
+- name: Setup OpenVPN
+  command: docker run -v {{ openvpn_volume }}:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://{{ openvpn_address }}
   tags: setup_openvpn
-
-#- name: Setup OpenVPN step2
-#  command: docker run -v openvpn:/etc/openvpn --rm  kylemanna/openvpn ovpn_initpki nopass
-#  tags: setup_openvpn
-
-#- name: Testing if target exists
-#  local_action: stat path='/var/lib/docker/volumes/openvpn'
-#  sudo: no
-#  register: p
-#  tags: tast_existing_config_dir
-
-#- name: Halt if directory does not exist
-#  fail:
-#    msg: "Target directory does not exist."
-#  when: p.stat.isdir is not defined or not p.stat.isdir
-#  tags: test_existing_config_dir
 
 - name: Copy over the openvpn configuration
   synchronize:
-    src: '/tmp/openvpn/'
-    dest: '/var/lib/docker/volumes/openvpn/'
+    src: '{{ openvpn_restore_src }}'
+    dest: '{{ openvpn_restore_dst }}'
     recursive: yes
     links: yes
     perms: yes
@@ -67,62 +58,6 @@
     delete: yes
   tags: restore_backup_configuration
 
-#- name: Create link to the OpenVPN configuration for auto startup if not running in a container
-#  file:
-#    src: '{{ docker_openvpn_target_base_dir }}/{{ item }}/openvpn.conf'
-#   dest: '{{ docker_openvpn_target_base_dir }}/{{ item }}.conf'
-#    state: 'link'
-#  with_flattened:
-#    - docker_openvpn_users_list
-#    - docker_openvpn_users_group_list
-#    - docker_openvpn_users_host_list
-#  when: item is defined and item != ""
-
 - name: Start OpenVPN
-  command: docker run -v openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+  command: docker run -v {{ openvpn_volume }}:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
   tags: start_openvpn
-
-
-#- name: Install OpenVPN docker container
-#  docker:
-#    name: openvpn
-#    image: kylemanna/openvpn:latest
-#    state: started
-#    pull: always
-#    command: -v openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.litiushkin.ru
-#    volumes:
-#    - /openvpn
-#    ports:
-#    - "1194:1194/udp"
-#  tags: pull_image
-
-#- name: Install OpenVPN stop1
-#  docker:
-#    name: openvpn
-#    state: stopped
-#    image: kylemanna/openvpn:latest
-#  tags: openvpn_stop
-
-#- name: Install OpenVPN step2
-#  docker:
-#    name: openvpn
-#    state: reload
-#    image: kylemanna/openvpn:latest
-#    command: -v openvpn/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
-#  tags: image_openvpn_initpki
-
-#- name: Install OpenVPN stop2
-#  docker:
-#    name: openvpn 
-#    state: stopped
-#    image: kylemanna/openvpn:latest
-#  tags: openvpn_stop
-
-#- name: Install OpenVPN step3
-#  docker:
-#    name: openvpn
-#    state: reload
-#    image: kylemanna/openvpn:latest
-#    command: -v openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
-#  tags: openvpn_image_start
-    
