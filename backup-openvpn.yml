@@ -1,0 +1,5 @@
+- name: Backup Openvpn server 
+  hosts: all
+  user: root
+  roles:
+    -  backup-openvpn
