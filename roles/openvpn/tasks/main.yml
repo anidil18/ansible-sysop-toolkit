@@ -13,18 +13,11 @@
     name: "{{ item }}"
   with_items:
   - setuptools
-#  - six
   - docker-py
   tags: install_packages
 
-#- name: "Create a docker OpenVPN volume"
-#  docker_volume:
-#    name: openvpn
-#  tags: create_volume
-
 - name: create OpenVPN volume
   command: docker volume create --name openvpn
-#  when: openvpn_exists|faileda
   tags: create_volume
 
 - name: Install OpenVPN docker container
@@ -38,6 +31,10 @@
     ports:
     - "1194:1194/udp"
   tags: pull_image
+
+#- name: Pull OpenVPN image
+#  command: docker pull kylemanna/openvpn:latest
+#  tags: pull_image
 
 - name: Setup OpenVPN step1
   command: docker run -v openvpn:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://vpn.litiushkin.ru
@@ -61,20 +58,13 @@
 
 - name: Copy over the openvpn configuration
   synchronize:
-    src: '/tmp/openvpn'
-    dest: '/var/lib/docker/volumes/openvpn'
-#    owner: 'root'
-#    group: 'root'
+    src: '/tmp/openvpn/'
+    dest: '/var/lib/docker/volumes/openvpn/'
     recursive: yes
     links: yes
     perms: yes
     copy_links: yes
     delete: yes
-#  with_flattened:
-#    - docker_openvpn_users_list
-#    - docker_openvpn_users_group_list
-#    - docker_openvpn_users_host_list
-#  when: item is defined and item != ""
   tags: restore_backup_configuration
 
 #- name: Create link to the OpenVPN configuration for auto startup if not running in a container
