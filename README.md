@@ -40,6 +40,16 @@ Roles:
 - virsh-list-vm				- print list of virtual machines on remoute host
 - virsh-nodeinfo			- print information about virsh node
 - virsh-start-vm			- start virtual machine on remoute host with virsh
+- aws-create-windows-instance		- create windows instance in amazone
+
+Command examples:
+
+		ansible-playbook -vvv -i mint-hosts/inventory aws-create-windows-instance.yml --limit=localhost --ask-vault-pass
+
+								or
+
+                ansible-playbook -vvv -i mint-hosts/inventory mactelnet-server.yml --ask-vault-pass
+
 
 In catalog mint-hosts, in file mint-hosts/group_vars/all
 
@@ -52,4 +62,14 @@ openvpn_restore_dst: 			- name of dir for storage OpenVPN setting after resore i
 
 In catalog kvm-hosts has file vms.yml with kvm virtual machine parameters
 
+In file aws-create-windows-instance.yml
+
+hostname:				- hostname for createing instance
+instance_type:				- type of creating instance
+image:					- amazone image name
+group:					- amazone security group (must be need for allowing access to creating host)
+region:					- amazone region (see ec2-describe-regions command from amazone CLI toolkit)
+key_pair_name:				- name of using key pair (need for decrypt password from windows instance)a
+
+in file role/aws-create-windows-instance/files/secret set amazone access keys
 

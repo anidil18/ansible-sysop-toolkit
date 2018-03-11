@@ -1,0 +1,17 @@
+- name: aws-create-windows-instance 
+  hosts: all
+  connection: local
+  gather_facts: False
+  user: root
+  vars_files:
+    - roles/aws-create-windows-instance/files/secrets
+  vars:
+    hostname: NewWindowsHost
+    instance_type: "t2.micro"
+    image: "ami-bc784ed9"
+    group: "launch-wizard-1"
+    region: "us-east-2"
+    key_pair_name: "new-pair1"
+  roles:
+    -  aws-create-windows-instance
+
