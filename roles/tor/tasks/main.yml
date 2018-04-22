@@ -1,7 +1,3 @@
-- name: upload our sources.list
-  copy: src=sources.list dest=/etc/apt/sources.list
-  tags: sources
-
 - name: update apt cache
   command: apt-get update
   tags: update_apt_cache
@@ -16,26 +12,30 @@
   file: path=/var/lib/ssh state=directory mode=000
   tags: create directory for tor hidden service
 
+- name: upload tor systemd unit file
+  copy: src=tor.service dest=/lib/systemd/system/tor.service
+  tags: copy tor systemd unit file
+
 - name: upload tor config file
-  copy: src=torrc dst=/etc/tor/torrc
+  copy: src=torrc dest=/etc/tor/torrc
   tags: copy tor config file
 
-- name: enable tor service
-  service:
-    name: tor
-    state: enabled
+# systemctl daemon-reload
+
+- name: daemon-reload
+  command: systemctl daemon-reload
+  tags: daemon_reload
 
 - name: started tor service
   service:
     name: tor
-    state: started
+    state: restarted
 
 - name: PRINT HIDDEN SERVICE CONFIG FILE
   command: cat /var/lib/tor/ssh/hostname
   register: filename
-  tag: PRINT HIDDEN SERVICE CONFIG FILE
+  tags: PRINT HIDDEN SERVICE CONFIG FILE
 
-- name: PRINT HIDDEN SERVICE CONFIG FILE
-  debug: filename
-  tag: PRINT HIDDEN SERVICE CONFIG FILE
+- debug: 
+    msg: "{{ filename.stdout }}"
 
