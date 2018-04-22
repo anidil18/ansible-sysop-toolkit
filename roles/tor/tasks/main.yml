@@ -20,6 +20,11 @@
   copy: src=torrc dest=/etc/tor/torrc
   tags: copy tor config file
 
+- name: upload tor config file for relay
+  copy: src=torrc-relay dest=/etc/tor/torrc
+  when: relay == true
+  tags: copy tor config file for relay
+
 # systemctl daemon-reload
 
 - name: daemon-reload

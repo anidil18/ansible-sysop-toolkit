@@ -1,0 +1,20 @@
+# This is a tor configuration made by arm. To change the configuration by hand
+# edit this file then either...
+# - tell arm to reset tor by pressing 'x'
+# - run 'pkill -sighup tor'
+# - or restart tor
+#
+# Descriptions of all of these configuration attributes (and many more) are
+# available in the tor man page.
+
+DataDirectory /root/.arm/tor_data # location to store runtime data
+Log notice file /root/.arm/tor_log # location to log notices, warnings, and errors
+ControlPort 9052              # port controllers can connect to
+CookieAuthentication 1        # method for controller authentication
+RunAsDaemon 1                 # runs as a background process
+User root                     # lowers our permissions to this user
+
+ORPort 443                    # port used for relaying traffic
+DirPort 80                    # port used for mirroring directory information
+SocksPort 0                   # prevents tor from being used as a client
+ExitPolicy reject *:*         # prevents us from connecting to non-relays
