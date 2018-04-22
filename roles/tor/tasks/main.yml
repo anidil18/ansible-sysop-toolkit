@@ -1,0 +1,41 @@
+- name: upload our sources.list
+  copy: src=sources.list dest=/etc/apt/sources.list
+  tags: sources
+
+- name: update apt cache
+  command: apt-get update
+  tags: update_apt_cache
+
+- name: install tor
+  apt: name={{ item }} state=installed
+  with_items:
+    - tor
+  tags: install tor packages
+
+- name: Create "/var/lib/tor/ssh" direcotiry
+  file: path=/var/lib/ssh state=directory mode=000
+  tags: create directory for tor hidden service
+
+- name: upload tor config file
+  copy: src=torrc dst=/etc/tor/torrc
+  tags: copy tor config file
+
+- name: enable tor service
+  service:
+    name: tor
+    state: enabled
+
+- name: started tor service
+  service:
+    name: tor
+    state: started
+
+- name: PRINT HIDDEN SERVICE CONFIG FILE
+  command: cat /var/lib/tor/ssh/hostname
+  register: filename
+  tag: PRINT HIDDEN SERVICE CONFIG FILE
+
+- name: PRINT HIDDEN SERVICE CONFIG FILE
+  debug: filename
+  tag: PRINT HIDDEN SERVICE CONFIG FILE
+

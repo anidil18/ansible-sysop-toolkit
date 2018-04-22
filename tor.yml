@@ -1,0 +1,5 @@
+- name: Install tor and create ssh hidden service 
+  hosts: all
+  user: root
+  roles:
+    -  tor
