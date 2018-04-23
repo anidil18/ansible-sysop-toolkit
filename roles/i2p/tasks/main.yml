@@ -1,0 +1,18 @@
+# apt-add-repository ppa:i2p-maintainers/i2p
+
+- name: add repository
+  command: apt-add-repository -y ppa:i2p-maintainers/i2p 
+  tags: add_repository
+
+#- apt_repository:
+#    repo: deb ppa:i2p-maintainers/i2p
+#    state: present
+#  tags: add_repositry
+
+- name: Update repositories cache and install I2P package
+  apt:
+    name: i2p
+    update_cache: yes
+  tags: install i2p package
+
+

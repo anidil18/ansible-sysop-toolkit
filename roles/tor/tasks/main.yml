@@ -1,9 +1,13 @@
-- name: update apt cache
-  command: apt-get update
-  tags: update_apt_cache
+- name: update apt cashe  
+  apt:
+    update_cache: yes
+
+#- name: update apt cache
+#  command: apt-get update
+#  tags: update_apt_cache
 
 - name: install tor
-  apt: name={{ item }} state=installed
+  apt: name={{ item }} state=present
   with_items:
     - tor
   tags: install tor packages

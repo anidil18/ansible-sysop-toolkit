@@ -2,4 +2,4 @@
   hosts: all
   user: root
   roles:
-    -  tor
+    -  i2p
