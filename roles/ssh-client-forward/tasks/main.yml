@@ -1,0 +1,16 @@
+---
+  - name: upload our tunnel.service
+    copy: src=tunnel.service dest=/etc/systemd/system/tunnel.service
+    tags: upload_unit_file
+
+  - name: Daemon_reload
+    shell: daemon_reload
+    tags: daemon_reload
+
+  - name: Enable tunnel.service
+    shell: systemctl enable tunnel.service
+    tags: enable_service
+
+  - name: Start tunnel.service
+    shell: systemctl start tunnel.service
+    tags: start_service

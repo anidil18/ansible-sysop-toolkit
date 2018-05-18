@@ -1,0 +1,5 @@
+- name: SSH server port forward
+  hosts: all
+  user: root
+  roles:
+    -  ssh-server-forward
