@@ -1,0 +1,20 @@
+---
+    - name: Swarm init
+      shell: docker swarm init --force-new-cluster
+      register: swarm_init
+      when: swarm_master is defined
+      tags: rswarm_init
+
+    - name: Swarm init output
+      debug:
+        var: swarm_init.stdout
+      when: swarm_master is defined
+      tags: swarm_init
+
+# Доделать
+
+    - name: Join to init
+      shell: docker swarm join --token SWMTKN-1-32yjwlxdgdz426r3gojhlvzx7bf2kz2r1j6h6osmfa9gs5q2ub-0nnchdih2cvvcet0ygkumcgsu 10.200.3.15:2377
+      register: swarm_init
+      when: swarm_master is not defined
+      tags: rswarm_init

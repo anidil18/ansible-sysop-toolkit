@@ -1,0 +1,5 @@
+- name: Install Docker swarm
+  hosts: work-vms
+  user: root
+  roles:
+    -  docker-swarm

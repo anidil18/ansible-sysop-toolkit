@@ -1,0 +1,5 @@
+- name: Install Docker-CE
+  hosts: work-vms
+  user: root
+  roles:
+    -  docker

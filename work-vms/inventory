@@ -1,0 +1,12 @@
+[work-vms:vars]
+ansible_ssh_user=user
+ansible_ssh_pass=Passw0rd
+ansible_become=yes
+ansible_become_method=su
+ansible_become_exe="su -"
+become_ask_pass=True
+
+[work-vms]
+10.200.3.15 ansible_connection=ssh ansible_ssh_user=user ansible_ssh_pass=Passw0rd swarm_master=true
+10.200.3.25 ansible_connection=ssh ansible_ssh_user=user ansible_ssh_pass=Passw0rd
+10.200.3.19 ansible_connection=ssh ansible_ssh_user=user ansible_ssh_pass=Passw0rd
