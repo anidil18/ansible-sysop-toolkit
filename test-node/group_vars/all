@@ -1,0 +1,6 @@
+started_vm: sterragate
+vm_name:    testvm1
+openvpn_volume: openvpn
+openvpn_address: 'vpn.litiushkin.ru'
+openvpn_restore_src: '/tmp/openvpn/'
+openvpn_restore_dst: '/var/lib/docker/volumes/openvpn/' 

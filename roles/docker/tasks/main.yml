@@ -2,6 +2,11 @@
     - name: Remove old docker
       shell: apt-get remove -y docker docker-engine docker.io
       tags: remove_old_docker
+    
+
+    - name: Update apt cashe
+      shell: apt-get update
+      tags: Install_needed_software
 
     - name: Install needed software
       shell: apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common

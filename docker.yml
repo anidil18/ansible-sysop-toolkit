@@ -1,5 +1,5 @@
 - name: Install Docker-CE
-  hosts: work-vms
+  hosts: test-nodes 
   user: root
   roles:
     -  docker
