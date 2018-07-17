@@ -41,8 +41,14 @@ Roles:
 - virsh-nodeinfo			- print information about virsh node
 - virsh-start-vm			- start virtual machine on remoute host with virsh
 - aws-create-windows-instance		- create windows instance in amazone
-- ssh-client-forward - forwarding local port to remote port on remote host from host with "remoute_login_ip"
-- ssh-server-forward - forwarding local server (listening any tcp server process) port to port on remote host
+- ssh-client-forward                    - forwarding local port to remote port on remote host from host with "remoute_login_ip"
+- ssh-server-forward                    - forwarding local server (listening any tcp server process) port to port on remote host
+- role save-iptables                    - saving current iptables rules in text file
+- role restore-iptables                 - restoring iptables rule from text file
+- role docker-fix                       - applied fix to system
+
+
+
 
 Command examples:
 
@@ -64,6 +70,9 @@ openvpn_volume:				- name of docker volume for storage OpenVPN settings, use in 
 openvpn_address: 			- name of URI , use in openvpn and backup-openvpn roles
 openvpn_restore_src: 			- name of dir for storage OpenVPN seting before restore in role openvpn or after backup in backup-openvpn
 openvpn_restore_dst: 			- name of dir for storage OpenVPN setting after resore in openvpn role or before backup in backup-openvpn
+old_port:                               - Port for which the docker and vmware conflict
+new_port:                               - The port we are mapping old_port 
+
 
 In catalog localhost, in file mint-hosts/localhost/all
 

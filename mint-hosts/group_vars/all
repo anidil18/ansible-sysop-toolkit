@@ -4,3 +4,6 @@ openvpn_volume: openvpn
 openvpn_address: 'vpn.litiushkin.ru'
 openvpn_restore_src: '/tmp/openvpn/'
 openvpn_restore_dst: '/var/lib/docker/volumes/openvpn/' 
+old_port:4789
+new_port:21
+
