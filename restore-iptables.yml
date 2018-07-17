@@ -1,0 +1,5 @@
+- name: Restore iptables rules
+  hosts: all
+  user: root
+  roles:
+    -  restore-iptables

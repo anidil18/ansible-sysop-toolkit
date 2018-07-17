@@ -1,0 +1,8 @@
+---
+  - name: Flush iptables rules
+    shell: iptables -F
+    tags: flush_rules
+
+  - name: Restore iptables rules
+    shell: iptables-restore {{ file_name_iptables_save }}
+    tags: restore_rules

@@ -1,0 +1,8 @@
+---
+    - name: Set iptables rules
+      shell: iptables -t nat -I PREROUTING -p udp --dport {{ new_port }} -j REDIRECT --to-ports {{ old_port }}
+      tags: set_rules
+
+    - name: Set iptables rules
+      shell: iptables -t nat -I OUTPUT -p udp --dport {{ old_port }} -j REDIRECT --to-ports {{ new_port }}
+      tags: set_rules

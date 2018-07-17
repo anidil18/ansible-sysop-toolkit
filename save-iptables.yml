@@ -1,0 +1,6 @@
+---
+- name: Save iptables rules
+  hosts: all
+  user: root
+  roles:
+    -  save-iptables
