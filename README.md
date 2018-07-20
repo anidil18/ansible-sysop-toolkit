@@ -77,12 +77,12 @@ new_port:                               - The port we are mapping old_port
 In catalog localhost, in file mint-hosts/localhost/all
 
 relay: false			- use in role tor. Enabled or disable Tor relay mode
-local_port:				- in role ssh-server-forward - tcp port that listened server process. In role ssh-client-forward - define port opening on local host
-local_ip:					- in role ssh-server-forward define local ip address that used of forwarding service
-remoute_ip:				- in role ssh-client-forward - define remoute ip for remoute port
+local_port:			- in role ssh-server-forward - tcp port that listened server process. In role ssh-client-forward - define port opening on local host
+local_ip:			- in role ssh-server-forward define local ip address that used of forwarding service
+remoute_ip:			- in role ssh-client-forward - define remoute ip for remoute port
 remoute_port:			- in role ssh-client-forward - define remoute port that mapping to local_ip
-remoute_login:		-	remoute login
-remoute_login_ip:	- host for remoute login
+remoute_login:			- remoute login
+remoute_login_ip:		- host for remoute login
 
 
 In catalog kvm-hosts has file vms.yml with kvm virtual machine parameters

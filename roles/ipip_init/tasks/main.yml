@@ -1,0 +1,33 @@
+- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+
+- name: Generate addon to config file /etc/network/interfaces
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    mode: "{{item.mode}}"
+  with_items:
+    - { src: 'interfaces', dest: '/tmp/interfaces.tmp', mode: '777'}
+  tags: copy_config_to_server
+
+- name: Backup '/etc/network/interfaces' to '/etc/network/interfaces.old'
+  shell: cp /etc/network/interfaces /etc/network/interfaces.old
+  when: backup_interfaces  == 'yes'
+  tags: copy_config_to_server
+
+- name: Set acl to '/tmp/interfaces.tmp' 
+  shell: chmod 777 /etc/network/interfaces
+  tags: copy_config_to_server
+
+- name: Add '/tmp/interfaces.tmp' file to '/etc/network/interfaces'
+  shell: cat /tmp/interfaces.tmp >> /etc/network/interfaces
+  tags: copy_config_to_server
+
+- name: Remove '/tmp/interfaces.tmp'
+  shell: rm -f /tmp/interfaces.tmp
+  tags: copy_config_to_server
+
+- name: Restart network
+  service:
+    name: systemd-networkd
+    state: restarted
+  tags: restart_network

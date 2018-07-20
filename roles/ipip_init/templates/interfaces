@@ -1,0 +1,8 @@
+auto tun{{ n }}
+    iface tun0 inet static
+    address {{ local_swarm_ipip }}
+    netmask {{ swarm_mask }}
+    pointopoint {{ remoute_swarm_ipip }}
+    pre-up ip tunnel add tun{{ n }} mode ipip local {{ local_ip }} remote {{ remoute_ip }}
+    post-down iptunnel del tun0
+
