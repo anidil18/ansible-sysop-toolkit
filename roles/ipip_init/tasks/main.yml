@@ -7,16 +7,16 @@
     mode: "{{item.mode}}"
   with_items:
     - { src: 'interfaces', dest: '/tmp/interfaces.tmp', mode: '777'}
-  tags: copy_config_to_server
+  tags: create_template_config
 
-- name: Backup '/etc/network/interfaces' to '/etc/network/interfaces.old'
-  shell: cp /etc/network/interfaces /etc/network/interfaces.old
-  when: backup_interfaces  == 'yes'
-  tags: copy_config_to_server
+- name: Backup '/etc/network/interfaces' to '/tmp/interfaces.old'
+  shell: cp /etc/network/interfaces /tmp/interfaces.old
+#  when: backup_interfaces  == 'yes'
+  tags: backup_old_config
 
-- name: Set acl to '/tmp/interfaces.tmp' 
-  shell: chmod 777 /etc/network/interfaces
-  tags: copy_config_to_server
+#- name: Set acl to '/tmp/interfaces.tmp' 
+#  shell: chmod 777 /etc/network/interfaces
+#  tags: set_acl
 
 - name: Add '/tmp/interfaces.tmp' file to '/etc/network/interfaces'
   shell: cat /tmp/interfaces.tmp >> /etc/network/interfaces
@@ -24,10 +24,15 @@
 
 - name: Remove '/tmp/interfaces.tmp'
   shell: rm -f /tmp/interfaces.tmp
-  tags: copy_config_to_server
+  tags: remove_template_config
 
-- name: Restart network
-  service:
-    name: systemd-networkd
-    state: restarted
-  tags: restart_network
+#- name: Restart network
+#  service:
+#    name: systemd-networkd
+#    state: restarted
+#  tags: restart_network
+
+- name: Reboot
+  shell: reboot
+  tags: reboot
+

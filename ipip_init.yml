@@ -1,6 +1,5 @@
 - name: Bootstrap ipip tunnels for deployment docker swarm cluster in DataLine
-#  hosts: dockerhosts*
-  hosts: localhost
+  hosts: swarm
   user: root
   vars_files:
     - roles/ipip_init/files/var.yml

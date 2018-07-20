@@ -1,7 +1,8 @@
 filter: 'ansible_default_ipv4.address'
 n: 10
+backup_interfaces: yes
 # node1
-local_swarm_ipip: 10.10.81.10 
-remoute_swarm_ipip: 10.10.81.11 
-remoute_ip: 127.0.0.1 
-swarm_mask: 255.255.255.0 
+#local_swarm_ipip: 10.10.81.10 
+#remoute_swarm_ipip: 10.10.81.11 
+#remoute_ip: 127.0.0.1 
+#swarm_mask: 255.255.255.0 

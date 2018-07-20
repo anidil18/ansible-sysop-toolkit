@@ -1,0 +1,10 @@
+[swarm]
+192.168.2.101 local_ip=192.168.2.101 local_tunnel_ip=10.10.11.10 remoute_tunnel_ip=10.10.11.11 remoute_ip=192.168.2.102 tunnel_mask=255.255.255.0
+192.168.2.102 local_ip=192.168.2.102 local_tunnel_ip=10.10.11.11 remoute_tunnel_ip=10.10.11.10 remoute_ip=192.168.2.101 tunnel_mask=255.255.255.0
+
+192.168.2.101 local_ip=192.168.2.101 local_tunnel_ip=10.10.11.12 remoute_tunnel_ip=10.10.11.13 remoute_ip=192.168.2.103 tunnel_mask=255.255.255.0
+192.168.2.103 local_ip=192.168.2.103 local_tunnel_ip=10.10.11.13 remoute_tunnel_ip=10.10.11.12 remoute_ip=192.168.2.101 tunnel_mask=255.255.255.0
+
+192.168.2.102 local_ip=192.168.2.102 local_tunnel_ip=10.10.11.14 remoute_tunnel_ip=10.10.11.15 remoute_ip=192.168.2.103 tunnel_mask=255.255.255.0
+192.168.2.103 local_ip=192.168.2.103 local_tunnel_ip=10.10.11.15 remoute_tunnel_ip=10.10.11.14 remoute_ip=192.168.2.102 tunnel_mask=255.255.255.0
+
