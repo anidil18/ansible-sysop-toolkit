@@ -1,0 +1,42 @@
+---
+- hosts: kubernetes-kodep
+  remote_user: root
+  tasks:
+  - name: install addpt dependences
+    apt: name={{item}} update_cache=yes
+    with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+     - bridge-utils
+     - git
+     - make
+  - name:    Add Docker GPG key
+    apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+  - name:    Add Docker APT repository
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+  - name: Install Docker
+    apt: 
+      deb: https://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/amd64/docker-ce_17.03.2~ce-0~ubuntu-xenial_amd64.deb
+      state: present
+    sudo: yes
+  - name: Add kubectl repo key
+    apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  - name: Add kubernetes repo
+    apt_repository:
+      repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+  - name: install_kubeadm
+    apt: 
+      name: kubectl 
+      state: present
+  - name: install_kubelet
+    apt:
+      name: kubelet  
+      state: present
+  - name: install_kubeadm
+    apt:
+      name: kubeadm 
+      state: present
+

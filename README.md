@@ -41,14 +41,8 @@ Roles:
 - virsh-nodeinfo			- print information about virsh node
 - virsh-start-vm			- start virtual machine on remoute host with virsh
 - aws-create-windows-instance		- create windows instance in amazone
-- ssh-client-forward                    - forwarding local port to remote port on remote host from host with "remoute_login_ip"
-- ssh-server-forward                    - forwarding local server (listening any tcp server process) port to port on remote host
-- role save-iptables                    - saving current iptables rules in text file
-- role restore-iptables                 - restoring iptables rule from text file
-- role docker-fix                       - applied fix to system
-
-
-
+- ssh-client-forward - forwarding local port to remote port on remote host from host with "remoute_login_ip"
+- ssh-server-forward - forwarding local server (listening any tcp server process) port to port on remote host
 
 Command examples:
 
@@ -70,19 +64,16 @@ openvpn_volume:				- name of docker volume for storage OpenVPN settings, use in 
 openvpn_address: 			- name of URI , use in openvpn and backup-openvpn roles
 openvpn_restore_src: 			- name of dir for storage OpenVPN seting before restore in role openvpn or after backup in backup-openvpn
 openvpn_restore_dst: 			- name of dir for storage OpenVPN setting after resore in openvpn role or before backup in backup-openvpn
-old_port:                               - Port for which the docker and vmware conflict
-new_port:                               - The port we are mapping old_port 
-
 
 In catalog localhost, in file mint-hosts/localhost/all
 
 relay: false			- use in role tor. Enabled or disable Tor relay mode
-local_port:			- in role ssh-server-forward - tcp port that listened server process. In role ssh-client-forward - define port opening on local host
-local_ip:			- in role ssh-server-forward define local ip address that used of forwarding service
-remoute_ip:			- in role ssh-client-forward - define remoute ip for remoute port
+local_port:				- in role ssh-server-forward - tcp port that listened server process. In role ssh-client-forward - define port opening on local host
+local_ip:					- in role ssh-server-forward define local ip address that used of forwarding service
+remoute_ip:				- in role ssh-client-forward - define remoute ip for remoute port
 remoute_port:			- in role ssh-client-forward - define remoute port that mapping to local_ip
-remoute_login:			- remoute login
-remoute_login_ip:		- host for remoute login
+remoute_login:		-	remoute login
+remoute_login_ip:	- host for remoute login
 
 
 In catalog kvm-hosts has file vms.yml with kvm virtual machine parameters
@@ -97,3 +88,5 @@ region:					- amazone region (see ec2-describe-regions command from amazone CLI 
 key_pair_name:				- name of using key pair (need for decrypt password from windows instance)a
 
 in file role/aws-create-windows-instance/files/secret set amazone access keys
+
+- kubernetes_instpkg.yml 		- Playbook for create kubernates instance from nekto.ryadom@gmail.com

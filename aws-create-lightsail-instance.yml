@@ -1,17 +1,17 @@
-- name: aws-create-ubuntu-instance 
+- name: aws-create-lightsail-instance 
   hosts: all
   connection: local
   gather_facts: False
   user: root
   vars_files:
-    - roles/aws-create-ubuntu-instance/files/secrets
+    - roles/aws-create-lightsail-instance/files/secrets
   vars:
-    hostname: NewUbuntuHost
+    hostname: NewLighsailHost
     instance_type: "t2.micro"
     image: "ami-965e6bf3"
     group: "launch-wizard-1"
     region: "us-east-2"
     key_pair_name: "id_rsa"
   roles:
-    -  aws-create-ubuntu-instance
+    -  aws-create-lightsail-instance
 
