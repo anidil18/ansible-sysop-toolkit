@@ -1,41 +1,57 @@
 ---
+    - name: Check if Docker-CE is installed
+      command: dpkg-query -l docker-ce
+      become: yes
+      ignore_errors: True
+      register: docker_pkg
+
     - name: Remove old docker
       shell: apt-get remove -y docker docker-engine docker.io
+      become: yes
+      when: not docker_pkg.changed 
       tags: remove_old_docker
-    
 
     - name: Update apt cashe
       shell: apt-get update
+      become: yes
       tags: Install_needed_software
 
     - name: Install needed software
       shell: apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+      become: yes
       tags: Install_needed_software
 
     - name: Download key
       shell: curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+      become: yes
       tags: Add_key
 
     - name: Add key
       shell: apt-key fingerprint 0EBFCD88
+      become: yes
       tags: Add_key
 
     - name: Add repository
       shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+      become: yes
       tags: Add_repository
 
     - name: Add repository
       shell: apt-get update
+      become: yes
       tags: Add_repository
-
-    - name: Enable docker service
-      shell: systemctl enable docker
-      tags: Install_docker
 
     - name: Install docker
       shell: apt-get install -y docker-ce
+      become: yes
+      tags: Install_docker
+
+    - name: Enable docker service
+      shell: systemctl enable docker
+      become: yes
       tags: Install_docker
 
     - name: Run hello world
       shell: apt-get install docker-ce
+      become: yes
       tags: Install_docker
