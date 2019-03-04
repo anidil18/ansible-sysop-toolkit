@@ -1,0 +1,12 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: "Check the installed zabbix_agent"
+      command: dpkg-query -l zabbix-agent
+      ignore_errors: True
+      register: zabbix_check
+
+    - debug:
+        msg: "Zabbix agent not faund !!! {{ ansible_hostname }}"
+      when: zabbix_check.stderr.find('no packages found') != -1
