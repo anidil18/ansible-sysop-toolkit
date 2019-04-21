@@ -13,7 +13,7 @@
   tags: install tor packages
 
 - name: Create "/var/lib/tor/ssh" direcotiry
-  file: path=/var/lib/ssh state=directory mode=700
+  file: path=/var/lib/tor/ssh state=directory mode=700
   tags: create directory for tor hidden service
 
 - name: upload tor systemd unit file
